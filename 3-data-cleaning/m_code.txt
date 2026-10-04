@@ -1,0 +1,203 @@
+let
+    Source = Excel.CurrentWorkbook(){[Name="Table1"]}[Content],
+    #"Order ID Column" = Table.TransformColumnTypes(Source,{{"Order ID", type text}, {"Customer Name", type text}, {"Customer Email", type text}, {"Gender", type text}, {"Age", Int64.Type}, {"Country", type text}, {"City", type text}, {"Product Category", type text}, {"Product Name", type text}, {"Quantity", type text}, {"Unit Price", type any}, {"Discount", type number}, {"Total Sales", type number}, {"Payment_Method", type text}, {"Order Date", type any}, {"Shipping_Date", type any}, {"Delivery_Status", type text}, {"Customer_Rating", type any}}),
+    #"Added Custom" = Table.AddColumn(#"Order ID Column", "Order ID Status", each if [Order ID] = null or Text.Trim(Text.From([Order ID])) = "" then
+    "Missing"
+else if Text.StartsWith(Text.Upper(Text.Trim(Text.From([Order ID]))), "ORD-") then
+    "Valid"
+else
+    "Invalid"),
+    #"Reordered Columns8" = Table.ReorderColumns(#"Added Custom",{"Order ID", "Order ID Status", "Customer Name", "Customer Email", "Gender", "Age", "Country", "City", "Product Category", "Product Name", "Quantity", "Unit Price", "Discount", "Total Sales", "Payment_Method", "Order Date", "Shipping_Date", "Delivery_Status", "Customer_Rating"}),
+    #"Trimmed Text" = Table.TransformColumns(#"Reordered Columns8",{{"Order ID", Text.Trim, type text}}),
+    #"Cleaned Text" = Table.TransformColumns(#"Trimmed Text",{{"Order ID", Text.Clean, type text}}),
+    #"Reordered Columns" = Table.ReorderColumns(#"Cleaned Text",{"Order ID", "Order ID Status", "Customer Name", "Customer Email", "Gender", "Age", "Country", "City", "Product Category", "Product Name", "Quantity", "Unit Price", "Discount", "Total Sales", "Payment_Method", "Order Date", "Shipping_Date", "Delivery_Status", "Customer_Rating"}),
+    #"Changed Type1" = Table.TransformColumnTypes(#"Reordered Columns",{{"Order ID Status", type text}, {"Customer Name", type text}}),
+    #"Trimmed Text1" = Table.TransformColumns(#"Changed Type1",{{"Customer Name", Text.Trim, type text}}),
+    #"Cleaned Text1" = Table.TransformColumns(#"Trimmed Text1",{{"Customer Name", Text.Clean, type text}}),
+    #"Trimmed Text2" = Table.TransformColumns(#"Cleaned Text1",{{"Customer Name", Text.Trim, type text}}),
+    #"Cleaned Text2" = Table.TransformColumns(#"Trimmed Text2",{{"Customer Name", Text.Clean, type text}}),
+    #"Replaced Value" = Table.ReplaceValue(#"Cleaned Text2","@@","",Replacer.ReplaceText,{"Customer Name"}),
+    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","!!","",Replacer.ReplaceText,{"Customer Name"}),
+    #"Trimmed Text3" = Table.TransformColumns(#"Replaced Value1",{{"Customer Email", Text.Trim, type text}}),
+    #"Cleaned Text3" = Table.TransformColumns(#"Trimmed Text3",{{"Customer Email", Text.Clean, type text}}),
+    #"Added Custom1" = Table.AddColumn(#"Cleaned Text3", "Email Status", each if [Customer Email] = null or Text.Trim([Customer Email]) = "" then
+    "Missing"
+else if
+    Text.Length([Customer Email]) - Text.Length(Text.Replace([Customer Email], "@", "")) <> 1
+    or not Text.Contains(Text.AfterDelimiter([Customer Email], "@"), ".")
+    or Text.Contains([Customer Email], " ")
+then
+    "Invalid"
+else
+    "Valid"),
+    #"Reordered Columns1" = Table.ReorderColumns(#"Added Custom1",{"Order ID", "Order ID Status", "Customer Name", "Customer Email", "Email Status", "Gender", "Age", "Country", "City", "Product Category", "Product Name", "Quantity", "Unit Price", "Discount", "Total Sales", "Payment_Method", "Order Date", "Shipping_Date", "Delivery_Status", "Customer_Rating"}),
+    #"Changed Type" = Table.TransformColumnTypes(#"Reordered Columns1",{{"Email Status", type text}}),
+    #"Trimmed Text4" = Table.TransformColumns(#"Changed Type",{{"Gender", Text.Trim, type text}}),
+    #"Cleaned Text4" = Table.TransformColumns(#"Trimmed Text4",{{"Gender", Text.Clean, type text}}),
+    #"Capitalized Each Word" = Table.TransformColumns(#"Cleaned Text4",{{"Gender", Text.Proper, type text}}),
+    #"Replaced Value2" = Table.ReplaceValue(#"Capitalized Each Word",null,"Unknown",Replacer.ReplaceValue,{"Gender"}),
+    #"Changed Type2" = Table.TransformColumnTypes(#"Replaced Value2",{{"Age", Int64.Type}}),
+    #"Added Custom2" = Table.AddColumn(#"Changed Type2", "Age_Status", each if [Age] = null then
+    "Missing"
+else if [Age] < 18 or [Age] > 70 then
+    "Invalid"
+else
+    "Valid"),
+    #"Changed Type3" = Table.TransformColumnTypes(#"Added Custom2",{{"Age_Status", type text}}),
+    #"Reordered Columns2" = Table.ReorderColumns(#"Changed Type3",{"Order ID", "Order ID Status", "Customer Name", "Customer Email", "Email Status", "Gender", "Age", "Age_Status", "Country", "City", "Product Category", "Product Name", "Quantity", "Unit Price", "Discount", "Total Sales", "Payment_Method", "Order Date", "Shipping_Date", "Delivery_Status", "Customer_Rating"}),
+    #"Replaced Value3" = Table.ReplaceValue(#"Reordered Columns2",-5,null,Replacer.ReplaceValue,{"Age"}),
+    #"Replaced Value4" = Table.ReplaceValue(#"Replaced Value3",999,null,Replacer.ReplaceValue,{"Age"}),
+    #"Replaced Value5" = Table.ReplaceValue(#"Replaced Value4",150,null,Replacer.ReplaceValue,{"Age"}),
+    #"Replaced Value6" = Table.ReplaceValue(#"Replaced Value5",0,null,Replacer.ReplaceValue,{"Age"}),
+    #"Trimmed Text5" = Table.TransformColumns(#"Replaced Value6",{{"Country", Text.Trim, type text}}),
+    #"Cleaned Text5" = Table.TransformColumns(#"Trimmed Text5",{{"Country", Text.Clean, type text}}),
+    #"Capitalized Each Word1" = Table.TransformColumns(#"Cleaned Text5",{{"Country", Text.Proper, type text}}),
+    #"Replaced Value7" = Table.ReplaceValue(#"Capitalized Each Word1",null,"Unknown",Replacer.ReplaceValue,{"Country"}),
+    #"Trimmed Text6" = Table.TransformColumns(#"Replaced Value7",{{"City", Text.Trim, type text}}),
+    #"Cleaned Text6" = Table.TransformColumns(#"Trimmed Text6",{{"City", Text.Clean, type text}}),
+    #"Capitalized Each Word2" = Table.TransformColumns(#"Cleaned Text6",{{"City", Text.Proper, type text}}),
+    #"Trimmed Text7" = Table.TransformColumns(#"Capitalized Each Word2",{{"Product Category", Text.Trim, type text}}),
+    #"Cleaned Text7" = Table.TransformColumns(#"Trimmed Text7",{{"Product Category", Text.Clean, type text}}),
+    #"Capitalized Each Word3" = Table.TransformColumns(#"Cleaned Text7",{{"Product Category", Text.Proper, type text}}),
+    #"Trimmed Text8" = Table.TransformColumns(#"Capitalized Each Word3",{{"Product Name", Text.Trim, type text}}),
+    #"Cleaned Text8" = Table.TransformColumns(#"Trimmed Text8",{{"Product Name", Text.Clean, type text}}),
+    #"Replaced Value8" = Table.ReplaceValue(#"Cleaned Text8","units","",Replacer.ReplaceText,{"Quantity"}),
+    #"Changed Type4" = Table.TransformColumnTypes(#"Replaced Value8",{{"Quantity", Int64.Type}}),
+    #"Added Custom3" = Table.AddColumn(#"Changed Type4", "Quantity Status", each if [Quantity] = null then
+    "Missing"
+else if [Quantity] <= 0 then
+    "Invalid"
+else if [Quantity] >= 1000 then
+    "Outlier"
+else
+    "Valid"),
+    #"Changed Type5" = Table.TransformColumnTypes(#"Added Custom3",{{"Quantity Status", type text}}),
+    #"Reordered Columns3" = Table.ReorderColumns(#"Changed Type5",{"Order ID", "Order ID Status", "Customer Name", "Customer Email", "Email Status", "Gender", "Age", "Age_Status", "Country", "City", "Product Category", "Product Name", "Quantity", "Quantity Status", "Unit Price", "Discount", "Total Sales", "Payment_Method", "Order Date", "Shipping_Date", "Delivery_Status", "Customer_Rating"}),
+    #"Changed Type6" = Table.TransformColumnTypes(#"Reordered Columns3",{{"Unit Price", type text}}),
+    #"Replaced Value9" = Table.ReplaceValue(#"Changed Type6","Ksh","",Replacer.ReplaceText,{"Unit Price"}),
+    #"Replaced Value10" = Table.ReplaceValue(#"Replaced Value9","â‚¬","",Replacer.ReplaceText,{"Unit Price"}),
+    #"Replaced Value11" = Table.ReplaceValue(#"Replaced Value10","KSh","",Replacer.ReplaceText,{"Unit Price"}),
+    #"Changed Type7" = Table.TransformColumnTypes(#"Replaced Value11",{{"Unit Price", type number}}),
+    #"Renamed Columns" = Table.RenameColumns(#"Changed Type7",{{"Discount", "Discount Rates"}}),
+    #"Added Custom4" = Table.AddColumn(#"Renamed Columns", "Total_Sales_Status", each if [Quantity Status] = "Valid" then
+    if Number.Abs([Total Sales] - ([Quantity] * [Unit Price] * (1 - [Discount Rates]))) < 0.01 then
+        "Valid"
+    else
+        "Mismatch"
+else
+    "Not Validated"),
+    #"Reordered Columns4" = Table.ReorderColumns(#"Added Custom4",{"Order ID", "Order ID Status", "Customer Name", "Customer Email", "Email Status", "Gender", "Age", "Age_Status", "Country", "City", "Product Category", "Product Name", "Quantity", "Quantity Status", "Unit Price", "Discount Rates", "Total Sales", "Total_Sales_Status", "Payment_Method", "Order Date", "Shipping_Date", "Delivery_Status", "Customer_Rating"}),
+    #"Changed Type8" = Table.TransformColumnTypes(#"Reordered Columns4",{{"Total_Sales_Status", type text}}),
+    #"Trimmed Text9" = Table.TransformColumns(#"Changed Type8",{{"Payment_Method", Text.Trim, type text}}),
+    #"Cleaned Text9" = Table.TransformColumns(#"Trimmed Text9",{{"Payment_Method", Text.Clean, type text}}),
+    #"Replaced Value12" = Table.ReplaceValue(#"Cleaned Text9","bank transfer","Bank Transfer",Replacer.ReplaceText,{"Payment_Method"}),
+    #"Replaced Value13" = Table.ReplaceValue(#"Replaced Value12","BANK TRANSFER","Bank Transfer",Replacer.ReplaceText,{"Payment_Method"}),
+    #"Replaced Value14" = Table.ReplaceValue(#"Replaced Value13","cash on delivery","Cash on Delivery",Replacer.ReplaceText,{"Payment_Method"}),
+    #"Replaced Value15" = Table.ReplaceValue(#"Replaced Value14","CASH ON DELIVERY","Cash on Delivery ",Replacer.ReplaceText,{"Payment_Method"}),
+    #"Replaced Value16" = Table.ReplaceValue(#"Replaced Value15","credit card","Credit Card",Replacer.ReplaceText,{"Payment_Method"}),
+    #"Replaced Value17" = Table.ReplaceValue(#"Replaced Value16","CREDIT CARD","Credit Card",Replacer.ReplaceText,{"Payment_Method"}),
+    #"Replaced Value18" = Table.ReplaceValue(#"Replaced Value17","creditcard","Credit Card",Replacer.ReplaceText,{"Payment_Method"}),
+    #"Replaced Value19" = Table.ReplaceValue(#"Replaced Value18","debit card","Debit Card",Replacer.ReplaceText,{"Payment_Method"}),
+    #"Replaced Value20" = Table.ReplaceValue(#"Replaced Value19","DEBIT CARD","Debit Card",Replacer.ReplaceText,{"Payment_Method"}),
+    #"Replaced Value21" = Table.ReplaceValue(#"Replaced Value20","Mpesa","M-Pesa",Replacer.ReplaceText,{"Payment_Method"}),
+    #"Replaced Value22" = Table.ReplaceValue(#"Replaced Value21","Bank transfer","Bank Transfer",Replacer.ReplaceText,{"Payment_Method"}),
+    #"Replaced Value23" = Table.ReplaceValue(#"Replaced Value22","mobile money","Mobile Money",Replacer.ReplaceText,{"Payment_Method"}),
+    #"Replaced Value24" = Table.ReplaceValue(#"Replaced Value23","MOBILE MONEY","Mobile Money",Replacer.ReplaceText,{"Payment_Method"}),
+    #"Replaced Value25" = Table.ReplaceValue(#"Replaced Value24","Pay Pal","PayPal",Replacer.ReplaceText,{"Payment_Method"}),
+    #"Replaced Value26" = Table.ReplaceValue(#"Replaced Value25","PAYPAL","PayPal",Replacer.ReplaceText,{"Payment_Method"}),
+    #"Replaced Value27" = Table.ReplaceValue(#"Replaced Value26","paypal","PayPal",Replacer.ReplaceText,{"Payment_Method"}),
+    #"Replaced Value28" = Table.ReplaceValue(#"Replaced Value27","Credit card","Credit Card",Replacer.ReplaceText,{"Payment_Method"}),
+    #"Replaced Value29" = Table.ReplaceValue(#"Replaced Value28","Cash on Delivery","Cash on Delivery",Replacer.ReplaceText,{"Payment_Method"}),
+    #"Trimmed Text10" = Table.TransformColumns(#"Replaced Value29",{{"Payment_Method", Text.Trim, type text}}),
+    #"Added Custom5" = Table.AddColumn(#"Trimmed Text10", "Clean Order Date", each let
+    v = [Order Date],
+    txt = Text.Trim(Text.From(v))
+in
+    if Text.Contains(txt, "12:00:00 AM") then
+        Date.From(DateTime.FromText(txt, [Culture="en-US"]))
+    else if Text.Contains(txt, ".") then
+        Date.FromText(
+            Text.Replace(txt, ".", "-"),
+            [Format="yyyy-MM-dd", Culture="en-US"]
+        )
+    else
+        Date.FromText(
+            txt,
+            [Format="dd/MM/yyyy", Culture="en-GB"]
+        )),
+    #"Changed Type9" = Table.TransformColumnTypes(#"Added Custom5",{{"Clean Order Date", type date}}),
+    #"Reordered Columns5" = Table.ReorderColumns(#"Changed Type9",{"Order ID", "Order ID Status", "Customer Name", "Customer Email", "Email Status", "Gender", "Age", "Age_Status", "Country", "City", "Product Category", "Product Name", "Quantity", "Quantity Status", "Unit Price", "Discount Rates", "Total Sales", "Total_Sales_Status", "Payment_Method", "Order Date", "Clean Order Date", "Shipping_Date", "Delivery_Status", "Customer_Rating"}),
+    #"Added Custom6" = Table.AddColumn(#"Reordered Columns5", "Clean Shipping Date", each let
+    v = [Shipping_Date],
+    txt = Text.Trim(Text.From(v))
+in
+    if Text.Contains(txt, "12:00:00 AM") then
+        Date.From(DateTime.FromText(txt, [Culture="en-US"]))
+    else if Text.Contains(txt, ".") then
+        Date.FromText(
+            Text.Replace(txt, ".", "-"),
+            [Format="yyyy-MM-dd", Culture="en-US"]
+        )
+    else
+        Date.FromText(
+            txt,
+            [Format="dd/MM/yyyy", Culture="en-GB"]
+        )),
+    #"Changed Type10" = Table.TransformColumnTypes(#"Added Custom6",{{"Clean Shipping Date", type date}}),
+    #"Reordered Columns6" = Table.ReorderColumns(#"Changed Type10",{"Order ID", "Order ID Status", "Customer Name", "Customer Email", "Email Status", "Gender", "Age", "Age_Status", "Country", "City", "Product Category", "Product Name", "Quantity", "Quantity Status", "Unit Price", "Discount Rates", "Total Sales", "Total_Sales_Status", "Payment_Method", "Order Date", "Clean Order Date", "Shipping_Date", "Clean Shipping Date", "Delivery_Status", "Customer_Rating"}),
+    #"Added Custom7" = Table.AddColumn(#"Reordered Columns6", "Shipping Date Status", each if [Clean Shipping Date] < [Clean Order Date] then
+    "Invalid"
+else
+    "Valid"),
+    #"Changed Type11" = Table.TransformColumnTypes(#"Added Custom7",{{"Shipping Date Status", type text}}),
+    #"Reordered Columns7" = Table.ReorderColumns(#"Changed Type11",{"Order ID", "Order ID Status", "Customer Name", "Customer Email", "Email Status", "Gender", "Age", "Age_Status", "Country", "City", "Product Category", "Product Name", "Quantity", "Quantity Status", "Unit Price", "Discount Rates", "Total Sales", "Total_Sales_Status", "Payment_Method", "Order Date", "Clean Order Date", "Shipping_Date", "Clean Shipping Date", "Shipping Date Status", "Delivery_Status", "Customer_Rating"}),
+    #"Trimmed Text11" = Table.TransformColumns(#"Reordered Columns7",{{"Delivery_Status", Text.Trim, type text}}),
+    #"Cleaned Text10" = Table.TransformColumns(#"Trimmed Text11",{{"Delivery_Status", Text.Clean, type text}}),
+    #"Capitalized Each Word4" = Table.TransformColumns(#"Cleaned Text10",{{"Delivery_Status", Text.Proper, type text}}),
+    #"Replaced Value30" = Table.ReplaceValue(#"Capitalized Each Word4",null,"Unknown",Replacer.ReplaceValue,{"Delivery_Status"}),
+    #"Replaced Value31" = Table.ReplaceValue(#"Replaced Value30","5 stars",5,Replacer.ReplaceValue,{"Customer_Rating"}),
+    #"Replaced Value32" = Table.ReplaceValue(#"Replaced Value31","N/A",null,Replacer.ReplaceValue,{"Customer_Rating"}),
+    #"Changed Type12" = Table.TransformColumnTypes(#"Replaced Value32",{{"Customer_Rating", Int64.Type}}),
+    #"Added Custom8" = Table.AddColumn(#"Changed Type12", "Rating Status", each if [Customer_Rating] = null then
+    "Missing"
+else if [Customer_Rating] < 1 or [Customer_Rating] > 5 then
+    "Invalid"
+else
+    "Valid"),
+    #"Changed Type13" = Table.TransformColumnTypes(#"Added Custom8",{{"Rating Status", type text}}),
+    #"Renamed Columns1" = Table.RenameColumns(#"Changed Type13",{{"Delivery_Status", "Delivery"}}),
+    #"Replaced Value33" = Table.ReplaceValue(#"Renamed Columns1",6,null,Replacer.ReplaceValue,{"Customer_Rating"}),
+    #"Replaced Value34" = Table.ReplaceValue(#"Replaced Value33",-1,null,Replacer.ReplaceValue,{"Customer_Rating"}),
+    #"Replaced Value35" = Table.ReplaceValue(#"Replaced Value34",0,null,Replacer.ReplaceValue,{"Customer_Rating"}),
+    #"Added Custom9" = Table.AddColumn(#"Replaced Value35", "Clean Total Sales", each if [Quantity Status] = "Valid" then
+    Number.Round(
+        [Quantity] * [Unit Price] * (1 - [Discount Rates]),
+        2
+    )
+else
+    null),
+    #"Changed Type14" = Table.TransformColumnTypes(#"Added Custom9",{{"Clean Total Sales", type number}}),
+    #"Added Custom10" = Table.AddColumn(#"Changed Type14", "Shipping Days", each if [Shipping Date Status] = "Valid" then
+    Duration.Days([Clean Shipping Date] - [Clean Order Date])
+else
+    null),
+    #"Changed Type15" = Table.TransformColumnTypes(#"Added Custom10",{{"Shipping Days", Int64.Type}}),
+    #"Added Custom11" = Table.AddColumn(#"Changed Type15", "Shipping Days Status", each if [Shipping Days] = null then
+    "Invalid Date"
+else if [Shipping Days] > 30 then
+    "Outlier"
+else
+    "Valid"),
+    #"Changed Type16" = Table.TransformColumnTypes(#"Added Custom11",{{"Shipping Days Status", type text}}),
+    #"Removed Columns" = Table.RemoveColumns(#"Changed Type16",{"Shipping_Date", "Order Date"}),
+    #"Renamed Columns2" = Table.RenameColumns(#"Removed Columns",{{"Clean Order Date", "Order Date"}, {"Clean Shipping Date", "Shipping Date"}}),
+    #"Reordered Columns9" = Table.ReorderColumns(#"Renamed Columns2",{"Order ID", "Order ID Status", "Customer Name", "Customer Email", "Email Status", "Gender", "Age", "Age_Status", "Country", "City", "Product Category", "Product Name", "Quantity", "Quantity Status", "Unit Price", "Discount Rates", "Total Sales", "Total_Sales_Status", "Clean Total Sales", "Payment_Method", "Order Date", "Shipping Date", "Shipping Date Status", "Shipping Days", "Shipping Days Status", "Delivery", "Customer_Rating", "Rating Status"}),
+    Custom1 = Table.ReplaceValue(
+    #"Reordered Columns9",
+    null,
+    "Unknown",
+    Replacer.ReplaceValue,
+    {"Product Category"}
+)
+in
+    Custom1
