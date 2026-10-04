@@ -302,9 +302,9 @@ This also helps explain the strong performance of Electronics.
 
 It was followed by:
 
-- South Africa — KES 142,285.20
-- United Kingdom — KES 135,738.10
-- India — KES 126,291.15
+- South Africa: KES 142,285.20
+- United Kingdom: KES 135,738.10
+- India: KES 126,291.15
 
 Unlike product performance, geographic sales were more evenly distributed.
 
