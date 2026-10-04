@@ -39,10 +39,10 @@ The highest monthly sales value was recorded in **July 2026 at KES 82,459.55**.
 
 Other strong months included:
 
-- April 2025 — KES 81,791.30
-- June 2025 — KES 81,475.25
-- August 2025 — KES 79,064.70
-- January 2025 — KES 78,207.90
+- April 2025: KES 81,791.30
+- June 2025: KES 81,475.25
+- August 2025: KES 79,064.70
+- January 2025: KES 78,207.90
 
 Sales declined sharply after August 2026.
 
@@ -102,10 +102,10 @@ Electronics generated more than three times the sales value of Home Appliances a
 
 The category's dominance is particularly notable because transaction volumes across the four main product categories were relatively similar:
 
-- Electronics — 1,245
-- Fashion — 1,240
-- Beauty — 1,239
-- Home Appliances — 1,228
+- Electronics: 1,245
+- Fashion: 1,240
+- Beauty: 1,239
+- Home Appliances: 1,228
 
 This indicates that Electronics' higher sales value was not simply caused by having substantially more transactions.
 
@@ -135,11 +135,11 @@ Individual products were ranked using `Clean Total Sales` to identify the five p
 
 The Top 5 products were:
 
-1. **Laptop Pro 14 — KES 463,852.50**
-2. **Smartphone X12 — KES 229,971.00**
-3. **Microwave Oven — KES 72,684.00**
-4. **Vacuum Cleaner — KES 59,247.00**
-5. **Smart Watch — KES 51,204.00**
+1. **Laptop Pro 14: KES 463,852.50**
+2. **Smartphone X12: KES 229,971.00**
+3. **Microwave Oven: KES 72,684.00**
+4. **Vacuum Cleaner: KES 59,247.00**
+5. **Smart Watch: KES 51,204.00**
 
 Together, these five products generated **KES 876,958.50**, representing approximately **70.5% of total sales**.
 
@@ -187,17 +187,17 @@ Sales were compared across countries using `Clean Total Sales` to identify the g
 
 Sales by country were:
 
-1. **Uganda — KES 178,995.00**
-2. **South Africa — KES 142,285.20**
-3. **United Kingdom — KES 135,738.10**
-4. **India — KES 126,291.15**
-5. **Ghana — KES 115,359.60**
-6. **Rwanda — KES 112,379.10**
-7. **Tanzania — KES 109,939.80**
-8. **Kenya — KES 108,389.05**
-9. **Nigeria — KES 105,366.85**
-10. **United States — KES 105,352.15**
-11. **Unknown — KES 3,295.60**
+1. **Uganda: KES 178,995.00**
+2. **South Africa: KES 142,285.20**
+3. **United Kingdom: KES 135,738.10**
+4. **India: KES 126,291.15**
+5. **Ghana: KES 115,359.60**
+6. **Rwanda: KES 112,379.10**
+7. **Tanzania: KES 109,939.80**
+8. **Kenya: KES 108,389.05**
+9. **Nigeria: KES 105,366.85**
+10. **United States: KES 105,352.15**
+11. **Unknown: KES 3,295.60**
 
 Uganda generated approximately **14.4% of total sales**.
 
@@ -248,12 +248,12 @@ The analysis included **4,960 valid orders**.
 
 The distribution was:
 
-1. **Returned — 1,045 orders (21.1%)**
-2. **Cancelled — 1,016 orders (20.5%)**
-3. **Processing — 996 orders (20.1%)**
-4. **Delivered — 968 orders (19.5%)**
-5. **Shipped — 929 orders (18.7%)**
-6. **Unknown — 6 orders (0.1%)**
+1. **Returned: 1,045 orders (21.1%)**
+2. **Cancelled: 1,016 orders (20.5%)**
+3. **Processing: 996 orders (20.1%)**
+4. **Delivered: 968 orders (19.5%)**
+5. **Shipped: 929 orders (18.7%)**
+6. **Unknown: 6 orders (0.1%)**
 
 Returned and Cancelled orders combined accounted for **2,061 orders**, or approximately **41.6% of valid orders**.
 
