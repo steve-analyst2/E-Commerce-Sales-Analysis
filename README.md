@@ -150,7 +150,7 @@ The original dataset contained **5,000 records**, and all 5,000 source records w
 
 > 📄 **Detailed cleaning process:** [`power_query_steps.md`](3-data-cleaning/power_query_steps.md)
 
-> 🧾 **Cleaning log:** [`cleaning_log.xlsx`](3-data-cleaning/cleaning_log.xlsx)
+> 🧾 **Cleaning log:** [Cleaning Log](3-data-cleaning/Cleaning_log.xlsx)
 
 > 💻 **Power Query M code:** [`m_code.txt`](3-data-cleaning/m_code.txt)
 
@@ -191,7 +191,7 @@ A dedicated cleaning log was maintained to document the identified issue, cleani
 
 ![Data Cleaning Log](6-images/04-cleaning-log.jpeg)
 
-> 📊 **View the complete cleaning log:** [`cleaning_log.xlsx`](3-data-cleaning/cleaning_log.xlsx)
+> 📊 **View the complete cleaning log:** [Cleaning Log](3-data-cleaning/Cleaning_log.xlsx)
 
 
 
@@ -463,7 +463,7 @@ E-Commerce-Sales-Analysis/
 │   └── business_questions.md
 │
 ├── 3-data-cleaning/
-│   ├── cleaning_log.xlsx
+│   ├── Cleaning_log.xlsx
 │   ├── power_query_steps.md
 │   └── m_code.txt
 │
@@ -484,7 +484,7 @@ E-Commerce-Sales-Analysis/
 │   └── 06-dashboard.jpeg
 │
 ├── Full Project Workbook/
-│   └── E-Commerce_Sales_Analysis.xlsx
+│   └── E-Commerce_Sales_Analysis.xlsxb
 │
 └── README.md
 ```
@@ -496,7 +496,7 @@ Each folder represents a stage of the analytical workflow, allowing the project 
 
 The complete Excel workbook contains the cleaned dataset, analytical calculations, PivotTables, and interactive dashboard used throughout the project.
 
-📥 **[Open the Full Project Workbook](Full%20Project%20Workbook/E-Commerce_Sales_Analysis.xlsx)**
+📥 **[Download the Full Project Workbook](Full%20Project%20Workbook/E-Commerce_Sales_Analysis.xlsb)**
 
 The supporting folders in this repository provide additional documentation for the individual stages of the project.
 
